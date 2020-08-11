@@ -20,19 +20,13 @@ params = sys.argv[2]
 print("params are", params)
 outname = datetime.date.today().strftime("%d-%m-%y")+"extracted.fasta"
 records = list(SeqIO.parse(handle, "genbank"))
-print("parsed gbk", records)
+
 sequences = []
-print("sequences none")
-print("going into loop")
-print("len records", len(records))
+
 for rec in records:
-    print("rec in loop")
     for feature in rec.features:
-        print("feature")
         if feature.type == "CDS":
-            print("is cds")
             if 'ribosomal protein' in ''.join(feature.qualifiers['product']):
-                print("ribos in product", feature)
                 elements = ''.join(feature.qualifiers['product']).split()
                 for rib in ribosomal_proteins:
                     if elements[-1] == rib:
