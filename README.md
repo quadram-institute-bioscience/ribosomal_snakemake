@@ -8,13 +8,13 @@ A workflow to generate ribosomal protein phylogenetic trees, using 15 ribosomal 
 Use conda to install to a linux or mac osx environment:
 
 # Requirements:
-Snakemake>=3.5
-Python>=3.3
-Biopython>=1.77
-Diamond BLAST version>=0.9.32
-Mafft>=7.429
-Fasttree>=2.1.10 OR:
-Iqtree>=1.6.11 
+Snakemake>=3.5<br>
+Python>=3.3<br>
+Biopython>=1.77<br>
+Diamond BLAST version>=0.9.32<br>
+Mafft>=7.429<br>
+Fasttree>=2.1.10 OR:<br>
+Iqtree>=1.6.11<br>
 
 Python scripts from this github folder
 
@@ -24,17 +24,17 @@ An environment.yaml is included for conda in env_yaml directory if required.
 Install conda here https://conda.io/en/latest/miniconda.html
 Install snakemake:
 
-conda install -c conda-forge mamba
-mamba create -c conda-forge -c bioconda -n snakemake snakemake
-
-conda activate snakemake
-snakemake --help
+conda install -c conda-forge mamba<br>
+mamba create -c conda-forge -c bioconda -n snakemake snakemake<br>
+<br>
+conda activate snakemake<br>
+snakemake --help<br>
 
 # Install the ribosomal protein tree workflow from github:
-git clone XXX
-cd XXX
-cd testfiles
-snakemake -n
+git clone XXX<br>
+cd XXX<br>
+cd testfiles<br>
+snakemake -n<br>
 
 # Usage
 Configure workflow:
@@ -51,12 +51,12 @@ ls *gbff > cleannames.txt
 
 # Execute workflow:
 Test your configuration by performing a dry-run via
-snakemake -n
-Execute the workflow locally via
-snakemake --cores $N
-using $N cores 
+snakemake -n<br>
+Execute the workflow locally via<br>
+snakemake --cores $N<br>
+using $N cores<br>
 
-or run it in a cluster environment such as
-snakemake --use-conda --cluster qsub --jobs 100
+or run it in a cluster environment such as<br>
+snakemake --use-conda --cluster qsub --jobs 100<br>
 
-Further information on running snakemake in a cluster environment can be found on the snakemake website
+Further information on running snakemake in a cluster environment can be found on the snakemake website<br>
