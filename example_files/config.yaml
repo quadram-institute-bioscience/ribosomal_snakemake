@@ -1,0 +1,12 @@
+threads:
+      4
+download_genbank:
+      options: "no"
+tree_type:
+      options: "fasttree"
+protein_dna:
+      options: "protein"
+report:
+      "report.html"
+previous_files:
+      "concatenated_ribos.fasta"

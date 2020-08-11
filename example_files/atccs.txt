@@ -1,0 +1,16 @@
+atccL14.aa
+atccL16.aa
+atccL18.aa
+atccL2.aa
+atccL22.aa
+atccL24.aa
+atccL3.aa
+atccL4.aa
+atccL5.aa
+atccL6.aa
+atccS10.aa
+atccS17.aa
+atccS19.aa
+atccS3.aa
+atccS8.aa
+atccs.txt
