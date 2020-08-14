@@ -1,0 +1,2 @@
+SyntaxError in line 173 of /Users/lisacrossman/ribosomal_snakemake/testfiles/Snakefile:
+No rule keywords allowed after run/shell/script/wrapper/cwl in rule report. (Snakefile, line 173)

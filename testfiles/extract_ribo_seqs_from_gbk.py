@@ -17,33 +17,35 @@ else:
     filehandle = sys.argv[1]
 handle = open(filehandle, 'r')
 params = sys.argv[2]
-print("params are", params)
+print("parameters for protein or dna are:", params)
 outname = datetime.date.today().strftime("%d-%m-%y")+"extracted.fasta"
 records = list(SeqIO.parse(handle, "genbank"))
-print("parsed gbk", records)
+
 sequences = []
-print("sequences none")
-print("going into loop")
-print("len records", len(records))
+
+#Loop through annotation to look for an annotation match
+#Save correct matches to file
+
 for rec in records:
-    print("rec in loop")
     for feature in rec.features:
-        print("feature")
         if feature.type == "CDS":
-            print("is cds")
             if 'ribosomal protein' in ''.join(feature.qualifiers['product']):
-                print("ribos in product", feature)
                 elements = ''.join(feature.qualifiers['product']).split()
                 for rib in ribosomal_proteins:
                     if elements[-1] == rib:
                         print("annotation match")
-                        if params == 'dna':
+                        if params.lower() == 'dna':
+                            #DNA parameters so extract the DNA sequence and save to a file with the appropriate ID
                             newrec = SeqRecord(feature.location.extract(rec.seq), id="{}_{}|{}".format(elements[-1], ribo_dic[elements[-1]], filehandle), description="")
                             sequences.append(newrec)
-                        elif params == 'protein':
+                        elif params.lower() == 'protein':
+                            #protein parameters so extract the protein sequence, (by translating the DNA sequence) and save to file with appropriate ID
                             newrec = SeqRecord(feature.location.extract(rec.seq).translate(), id="{}_{}|{}".format(elements[-1], ribo_dic[elements[-1]], filehandle), description="")
                             sequences.append(newrec)
                         else:
-                            print("unknown params for DNA or protein")
+                            print("unknown parameters for DNA or protein, please choose either dna or protein")
+
 outfile = open(outname, 'a+')
+#save chosen sequences to file with date stamp
+
 SeqIO.write(sequences, outfile, "fasta")

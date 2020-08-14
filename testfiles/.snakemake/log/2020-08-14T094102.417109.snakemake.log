@@ -1,0 +1,344 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	align
+	1	all
+	1	check_for_missing_seqs
+	1	collect_hits
+	1	concatenate
+	1	concatenate_with_previous
+	1	convert_nucl_protein
+	1	create_mapover
+	1	create_tree
+	1	deduplicate
+	15	diamond_db
+	1	diamond_run
+	1	download_ncbi
+	1	extract_from_gbk
+	1	gather_gbff
+	1	gunzip_zipfiles
+	1	report
+	31
+
+[Fri Aug 14 09:41:02 2020]
+rule download_ncbi:
+    output: logs/completed.txt
+    jobid: 1
+    threads: 4
+
+[Fri Aug 14 09:41:02 2020]
+Finished job 1.
+1 of 31 steps (3%) done
+
+[Fri Aug 14 09:41:02 2020]
+rule gather_gbff:
+    input: logs/completed.txt
+    output: logs/newroot.txt
+    jobid: 2
+
+[Fri Aug 14 09:41:02 2020]
+Finished job 2.
+2 of 31 steps (6%) done
+
+[Fri Aug 14 09:41:02 2020]
+rule gunzip_zipfiles:
+    input: logs/newroot.txt
+    output: logs/gunzip_complete.txt
+    jobid: 3
+
+[Fri Aug 14 09:41:03 2020]
+Finished job 3.
+3 of 31 steps (10%) done
+
+[Fri Aug 14 09:41:03 2020]
+rule convert_nucl_protein:
+    input: logs/gunzip_complete.txt
+    output: logs/conversion_complete.txt
+    jobid: 4
+    threads: 4
+
+[Fri Aug 14 09:41:03 2020]
+Finished job 4.
+4 of 31 steps (13%) done
+
+[Fri Aug 14 09:41:03 2020]
+rule create_mapover:
+    input: logs/conversion_complete.txt
+    output: Allnamesmapoverdatabase.txt
+    jobid: 5
+
+[Fri Aug 14 09:41:03 2020]
+Finished job 5.
+5 of 31 steps (16%) done
+
+[Fri Aug 14 09:41:03 2020]
+rule extract_from_gbk:
+    input: cleannames.txt, Allnamesmapoverdatabase.txt
+    output: 14-08-20extracted.fasta, logs/extracted_complete.txt
+    jobid: 22
+
+[Fri Aug 14 09:41:08 2020]
+Finished job 22.
+6 of 31 steps (19%) done
+
+[Fri Aug 14 09:41:08 2020]
+rule check_for_missing_seqs:
+    input: 14-08-20extracted.fasta, logs/extracted_complete.txt
+    output: 14-08-20concatenated_ribosomal_proteins_db.fasta, strains_missing_ribos.txt
+    jobid: 21
+
+[Fri Aug 14 09:41:08 2020]
+Finished job 21.
+7 of 31 steps (23%) done
+
+[Fri Aug 14 09:41:08 2020]
+rule diamond_db:
+    input: atccL3.aa, strains_missing_ribos.txt
+    output: atccL3.aa.dmnd
+    jobid: 12
+    wildcards: sample=atccL3.aa
+
+
+[Fri Aug 14 09:41:08 2020]
+rule diamond_db:
+    input: atccL2.aa, strains_missing_ribos.txt
+    output: atccL2.aa.dmnd
+    jobid: 9
+    wildcards: sample=atccL2.aa
+
+
+[Fri Aug 14 09:41:08 2020]
+rule diamond_db:
+    input: atccL4.aa, strains_missing_ribos.txt
+    output: atccL4.aa.dmnd
+    jobid: 13
+    wildcards: sample=atccL4.aa
+
+
+[Fri Aug 14 09:41:08 2020]
+rule diamond_db:
+    input: atccS3.aa, strains_missing_ribos.txt
+    output: atccS3.aa.dmnd
+    jobid: 19
+    wildcards: sample=atccS3.aa
+
+[Fri Aug 14 09:41:08 2020]
+Finished job 12.
+8 of 31 steps (26%) done
+[Fri Aug 14 09:41:08 2020]
+Finished job 13.
+9 of 31 steps (29%) done
+[Fri Aug 14 09:41:08 2020]
+Finished job 19.
+10 of 31 steps (32%) done
+[Fri Aug 14 09:41:08 2020]
+Finished job 9.
+11 of 31 steps (35%) done
+
+[Fri Aug 14 09:41:08 2020]
+rule diamond_db:
+    input: atccL5.aa, strains_missing_ribos.txt
+    output: atccL5.aa.dmnd
+    jobid: 14
+    wildcards: sample=atccL5.aa
+
+
+[Fri Aug 14 09:41:08 2020]
+rule diamond_db:
+    input: atccS8.aa, strains_missing_ribos.txt
+    output: atccS8.aa.dmnd
+    jobid: 20
+    wildcards: sample=atccS8.aa
+
+
+[Fri Aug 14 09:41:08 2020]
+rule diamond_db:
+    input: atccL16.aa, strains_missing_ribos.txt
+    output: atccL16.aa.dmnd
+    jobid: 7
+    wildcards: sample=atccL16.aa
+
+
+[Fri Aug 14 09:41:08 2020]
+rule diamond_db:
+    input: atccL6.aa, strains_missing_ribos.txt
+    output: atccL6.aa.dmnd
+    jobid: 15
+    wildcards: sample=atccL6.aa
+
+[Fri Aug 14 09:41:08 2020]
+Finished job 14.
+12 of 31 steps (39%) done
+
+[Fri Aug 14 09:41:08 2020]
+rule diamond_db:
+    input: atccL14.aa, strains_missing_ribos.txt
+    output: atccL14.aa.dmnd
+    jobid: 6
+    wildcards: sample=atccL14.aa
+
+[Fri Aug 14 09:41:08 2020]
+Finished job 20.
+13 of 31 steps (42%) done
+[Fri Aug 14 09:41:08 2020]
+Finished job 7.
+14 of 31 steps (45%) done
+
+[Fri Aug 14 09:41:08 2020]
+rule diamond_db:
+    input: atccL18.aa, strains_missing_ribos.txt
+    output: atccL18.aa.dmnd
+    jobid: 8
+    wildcards: sample=atccL18.aa
+
+
+[Fri Aug 14 09:41:08 2020]
+[Fri Aug 14 09:41:08 2020]
+Finished job 15.
+rule diamond_db:
+    input: atccL22.aa, strains_missing_ribos.txt
+    output: atccL22.aa.dmnd
+    jobid: 10
+    wildcards: sample=atccL22.aa
+15 of 31 steps (48%) done
+
+[Fri Aug 14 09:41:08 2020]
+Finished job 6.
+16 of 31 steps (52%) done
+
+[Fri Aug 14 09:41:08 2020]
+rule diamond_db:
+    input: atccS10.aa, strains_missing_ribos.txt
+    output: atccS10.aa.dmnd
+    jobid: 16
+    wildcards: sample=atccS10.aa
+
+
+[Fri Aug 14 09:41:08 2020]
+rule diamond_db:
+    input: atccL24.aa, strains_missing_ribos.txt
+    output: atccL24.aa.dmnd
+    jobid: 11
+    wildcards: sample=atccL24.aa
+
+[Fri Aug 14 09:41:08 2020]
+Finished job 8.
+17 of 31 steps (55%) done
+[Fri Aug 14 09:41:08 2020]
+Finished job 10.
+18 of 31 steps (58%) done
+[Fri Aug 14 09:41:08 2020]
+Finished job 16.
+19 of 31 steps (61%) done
+
+[Fri Aug 14 09:41:08 2020]
+rule diamond_db:
+    input: atccS19.aa, strains_missing_ribos.txt
+    output: atccS19.aa.dmnd
+    jobid: 18
+    wildcards: sample=atccS19.aa
+
+
+[Fri Aug 14 09:41:08 2020]
+rule diamond_db:
+    input: atccS17.aa, strains_missing_ribos.txt
+    output: atccS17.aa.dmnd
+    jobid: 17
+    wildcards: sample=atccS17.aa
+
+[Fri Aug 14 09:41:08 2020]
+Finished job 11.
+20 of 31 steps (65%) done
+
+[Fri Aug 14 09:41:08 2020]
+Job 24: executing diamond run with 1 threads on the following files strains_missing_ribos.txt
+
+[Fri Aug 14 09:41:08 2020]
+Finished job 18.
+21 of 31 steps (68%) done
+[Fri Aug 14 09:41:08 2020]
+Finished job 17.
+22 of 31 steps (71%) done
+[Fri Aug 14 09:41:09 2020]
+Finished job 24.
+23 of 31 steps (74%) done
+
+[Fri Aug 14 09:41:09 2020]
+rule collect_hits:
+    input: logs/blast_complete.txt
+    output: 14-08-20recovered.fasta
+    log: logs/collect_hits.log
+    jobid: 26
+
+[Fri Aug 14 09:41:09 2020]
+Finished job 26.
+24 of 31 steps (77%) done
+
+[Fri Aug 14 09:41:09 2020]
+rule concatenate:
+    input: 14-08-20recovered.fasta
+    output: 14-08-20concatenated_ribosomal_proteins_db.fasta_2
+    log: logs/concatenate.log
+    jobid: 23
+
+[Fri Aug 14 09:41:09 2020]
+Finished job 23.
+25 of 31 steps (81%) done
+
+[Fri Aug 14 09:41:09 2020]
+rule concatenate_with_previous:
+    input: concatenated_ribos.fasta, 14-08-20concatenated_ribosomal_proteins_db.fasta, 14-08-20concatenated_ribosomal_proteins_db.fasta_2
+    output: 14-08-20.updateriboprot.fasta
+    log: logs/concatenate_with_previous.log
+    jobid: 30
+
+[Fri Aug 14 09:41:09 2020]
+Finished job 30.
+26 of 31 steps (84%) done
+
+[Fri Aug 14 09:41:09 2020]
+rule deduplicate:
+    input: 14-08-20.updateriboprot.fasta
+    output: 14-08-20.updateriboprot.fastadedupe.fasta
+    log: logs/deduplicate.log
+    jobid: 29
+
+[Fri Aug 14 09:41:09 2020]
+Finished job 29.
+27 of 31 steps (87%) done
+
+[Fri Aug 14 09:41:09 2020]
+rule align:
+    input: 14-08-20.updateriboprot.fastadedupe.fasta
+    output: 14-08-20.updateriboprotdedupe.aln
+    log: logs/align.log
+    jobid: 28
+    threads: 4
+
+[Fri Aug 14 09:41:10 2020]
+Finished job 28.
+28 of 31 steps (90%) done
+
+[Fri Aug 14 09:41:10 2020]
+rule create_tree:
+    input: 14-08-20.updateriboprotdedupe.aln
+    output: 14-08-20.updateriboprotdedupe.aln.treefile
+    log: logs/create_tree.log
+    jobid: 27
+
+[Fri Aug 14 09:41:10 2020]
+Finished job 27.
+29 of 31 steps (94%) done
+
+[Fri Aug 14 09:41:10 2020]
+rule report:
+    input: 14-08-20.updateriboprotdedupe.aln.treefile
+    output: report.html
+    jobid: 25
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /Users/lisacrossman/ribosomal_snakemake/testfiles/.snakemake/log/2020-08-14T094102.417109.snakemake.log

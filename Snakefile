@@ -36,9 +36,17 @@ rule all:
         report="report.html"
 
 
+def glob_files():
+      suffixes = ['*.gbff', '*.gbk', '*.gb', '*.genbank']
+      files_glob = []
+      for suf in suffixes:
+          files_glob.append([Path(fa).name for fa in glob.glob('suf')])
+      print(files_glob)
+      return files_glob
+
 rule convert_nucl_protein:
       input:
-           files = [Path(fa).name for fa in glob.glob("*gbff")],
+           files = glob_files(),
 	   gunz = "logs/gunzip_complete.txt"
       output:
            "logs/conversion_complete.txt"

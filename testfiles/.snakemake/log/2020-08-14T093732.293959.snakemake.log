@@ -1,0 +1,2 @@
+SyntaxError in line 172 of /Users/lisacrossman/ribosomal_snakemake/testfiles/Snakefile:
+Colon expected after keyword report. (Snakefile, line 172)

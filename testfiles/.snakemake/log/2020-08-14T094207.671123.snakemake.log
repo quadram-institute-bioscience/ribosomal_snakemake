@@ -1,0 +1,29 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	all
+	1	report
+	2
+
+[Fri Aug 14 09:42:07 2020]
+rule report:
+    input: 14-08-20.updateriboprotdedupe.aln.treefile
+    output: report.html
+    jobid: 25
+
+[Fri Aug 14 09:42:08 2020]
+Finished job 25.
+1 of 2 steps (50%) done
+
+[Fri Aug 14 09:42:08 2020]
+localrule all:
+    input: logs/completed.txt, logs/newroot.txt, logs/gunzip_complete.txt, cleannames.txt, logs/conversion_complete.txt, Allnamesmapoverdatabase.txt, atccL14.aa.dmnd, atccL16.aa.dmnd, atccL18.aa.dmnd, atccL2.aa.dmnd, atccL22.aa.dmnd, atccL24.aa.dmnd, atccL3.aa.dmnd, atccL4.aa.dmnd, atccL5.aa.dmnd, atccL6.aa.dmnd, atccS10.aa.dmnd, atccS17.aa.dmnd, atccS19.aa.dmnd, atccS3.aa.dmnd, atccS8.aa.dmnd, strains_missing_ribos.txt, 14-08-20concatenated_ribosomal_proteins_db.fasta, logs/extracted_complete.txt, 14-08-20concatenated_ribosomal_proteins_db.fasta_2, logs/blast_complete.txt, report.html
+    jobid: 0
+
+[Fri Aug 14 09:42:08 2020]
+Finished job 0.
+2 of 2 steps (100%) done
+Complete log: /Users/lisacrossman/ribosomal_snakemake/testfiles/.snakemake/log/2020-08-14T094207.671123.snakemake.log
