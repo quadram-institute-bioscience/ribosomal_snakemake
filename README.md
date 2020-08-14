@@ -8,13 +8,14 @@ A workflow to generate ribosomal protein phylogenetic trees, using 15 ribosomal 
 Use conda to install to a linux or Mac OSX environment:
 
 # Requirements:
-Snakemake>=3.5<br>
-Python>=3.3<br>
-Biopython>=1.77<br>
-Diamond BLAST version>=0.9.32<br>
-Mafft>=7.429<br>
-Fasttree>=2.1.10 OR:<br>
-Iqtree>=1.6.11<br>
+snakemake>=3.5<br>
+python>=3.3<br>
+biopython>=1.77<br>
+diamond BLAST version>=0.9.32<br>
+mafft>=7.429<br>
+fasttree>=2.1.10 OR:<br>
+iqtree>=1.6.11<br>
+ncbi-genome-download>=0.3.0
 
 Python scripts from this github folder
 
@@ -22,6 +23,8 @@ An environment.yaml is included for conda in env_yaml directory if required.
 
 Install conda:<br>
 Install conda here https://conda.io/en/latest/miniconda.html<br>
+Install dependencies <i>via</i> conda 
+
 Install snakemake:<br>
 
 conda install -c conda-forge mamba<br>
