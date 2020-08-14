@@ -67,8 +67,7 @@ rule create_mapover:
        params:
             required=config['download_genbank']['options']
        run:
-            if 'yes' in params.required:
-                print("WHHOOOPPP", params.required)	  
+            if 'yes' in params.required:	  
                 shell("for file in GCF*gbff; do echo $file; grep DEFINITION $file; done > whichsequenceiswhich.txt")
                 shell("python ~/makeconsdatabasemapping.py > Allnamesmapoverdatabase.txt")
             else:
@@ -87,7 +86,6 @@ rule extract_from_gbk:
     run:
         inputs = [lin.rstrip() for lin in open(''.join(input.check),'r')]
         for cleanname in inputs:
-            print("cleannames", cleanname, "params", {params})
             shell("python extract_ribo_seqs_from_gbk.py {cleanname} {params}")
         shell("touch 'logs/extracted_complete.txt'")
 	     
