@@ -8,7 +8,7 @@ rule download_ncbi:
       run:
            if 'yes' in params.required:
                for gen in [line.rstrip() for line in open('genus.txt', 'r')]:
-                   shell(f"ncbi-genome-download --genus {gen} bacteria --parallel {threads}")
+                   shell(f"ncbi-genome-download --genera {gen} bacteria --parallel {threads}")
            shell("touch 'logs/completed.txt'")
 
 
