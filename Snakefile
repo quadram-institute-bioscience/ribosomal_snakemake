@@ -37,10 +37,10 @@ rule all:
 
 
 def glob_files():
-      suffixes = ['*.gbff', '*.gbk', '*.gb', '*.genbank']
+      suffixes = ['*.gbff', '.gbf', '*.gbk', '*.gb', '*.genbank']
       files_glob = []
       for suf in suffixes:
-          files_glob.append([Path(fa).name for fa in glob.glob('suf')])
+          files_glob.append([Path(fa).name for fa in glob.glob(suf)])
       print(files_glob)
       return files_glob
 
