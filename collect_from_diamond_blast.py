@@ -13,18 +13,20 @@ if 'protein' in sys.argv[2]:
    inf = '.'.join(infile_name[2:-1])+".faa"
 elif 'dna' in sys.argv[2]:
    inf = '.'.join(infile_name[2:-1])+".ffn"
-print("infile name is", inf)
+print("The infile name is", inf)
 infile = open(inf, 'r')
 
 keeps = []
 d = {}
 i = 0
 j = []
+ribos = ['rplN','rplP','rplR','rplB','rplV','rplX','rplC','rplD','rplE','rplF','rpsJ','rpsQ','rpsS','rpsC','rpsH']
 
 outname = datetime.date.today().strftime("%d-%m-%y")+"recovered.fasta"
-print("outname", outname)
+print("The outfile name is", outname)
 
 def check_for_more_than_one(handle):
+    #checks for more than one diamond blast match
     for line in infile:
         elements = line.rstrip().split()
         j.append(float(elements[-1]))
@@ -39,20 +41,24 @@ d = {}
 
 for ind, line in enumerate(handle):
     elements = line.rstrip().split()
+    if any(r for r in ribos if r in elements[1]):
+       protid = elements[1]
+    else:
+       protid = elements[1]+'_'+infile_name[0]
     if check_for_more_than_one == False:
-        print("there's more than one with the same score!!!")
+        print("WARNING: there's more than one with the same score!!!")
     else:
         if ind > 0:
             pass
         else:
             try:
-               d[elements[0]].append(elements[1])
+               d[elements[0]].append(protid)
             except:
-               d[elements[0]] = elements[1]
+               d[elements[0]] = protid
             keeps.append(elements[0])
 
 
-print("this is keeps", keeps)
+#print("this is the keep list", keeps)
             
 sequences = []
 records = list(SeqIO.parse(infile, "fasta"))
@@ -63,13 +69,12 @@ for rec in records:
             print("Hit identified", rec.id, keeps)
             shortid = rec.id.split('_')
             newid = "{}|{}".format(d[rec.id],shortid[0])
-            print("this is newid", newid, "here")
+            print("this is the newid", newid)
             new_rec = SeqRecord(rec.seq, id=newid, description="")
-            print("new_rec", new_rec)
             sequences.append(new_rec)
     except:
         pass
 
-print("len seqeunces", len(sequences))
+print("Number of sequences", len(sequences))
 SeqIO.write(sequences, outfile, "fasta")
 

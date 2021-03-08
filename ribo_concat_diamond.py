@@ -23,8 +23,8 @@ def concatenate_diamond_matches(infile):
 #        print("shortid to split on _", shortid)
         newid = id[1]
 #        print("newid", newid)
-        rib = shortid[1]
-#        print("rib", rib)
+        rib = shortid[0]
+#        print("rib, this needs to contain the name of the ribosomal protein, e.g. rplN", rib)
         seqy = str(rec.seq)
         if seqy.endswith('*'):
              #remove the stop character sometimes included in protein translation files
@@ -38,7 +38,6 @@ def concatenate_diamond_matches(infile):
                    d[newid][ribo].append(newseq)
                 except:
                    d[newid][ribo] = [newseq]
-
     #create datestamp file
     outname = datetime.date.today().strftime("%d-%m-%y")+"concatenated_ribosomal_proteins_db.fasta"
     if os.path.exists(outname):
@@ -50,6 +49,7 @@ def concatenate_diamond_matches(infile):
 
     outfile = open(outname, 'a+')
     for key, value in d.items():
+         print(key, len(value))
          #test we have all 15 sequences, otherwise mark genome for diamond blast searches or ignore
          if len(value) == 15:
               joinstring = "{}{}{}{}{}{}{}{}{}{}{}{}{}{}{}".format(''.join(d[key]['rplN']),''.join(d[key]['rplP']),''.join(d[key]['rplR']),''.join(d[key]['rplB']),''.join(d[key]['rplV']),''.join(d[key]['rplX']),''.join(d[key]['rplC']),''.join(d[key]['rplD']),''.join(d[key]['rplE']),''.join(d[key]['rplF']),''.join(d[key]['rpsJ']),''.join(d[key]['rpsQ']),''.join(d[key]['rpsS']),''.join(d[key]['rpsC']),''.join(d[key]['rpsH']))
