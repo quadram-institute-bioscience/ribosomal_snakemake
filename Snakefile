@@ -21,33 +21,55 @@ print(DATESTRING, SAMPLES, GENUS)
 
 rule all:
     input:
+        "logs/cleannamecheck.txt",
         "logs/completed.txt",
-	"logs/newroot.txt",
-	"logs/gunzip_complete.txt",
-	"cleannames.txt",
-	"logs/conversion_complete.txt",
-	"Allnamesmapoverdatabase.txt",
+        "logs/newroot.txt",
+        "logs/gunzip_complete.txt",
+        "logs/conversion_complete.txt",
+        "Allnamesmapoverdatabase.txt",
         atccs=expand("{sample}.dmnd", sample=SAMPLES),
         missing="strains_missing_ribos.txt",
         conc=DATESTRING['today']+"concatenated_ribosomal_proteins_db.fasta",
-	extr="logs/extracted_complete.txt",
-	subtest=DATESTRING['today']+"concatenated_ribosomal_proteins_db.fasta_2",
+        extr="logs/extracted_complete.txt",
+        subtest=DATESTRING['today']+"concatenated_ribosomal_proteins_db.fasta_2",
         dmnd="logs/blast_complete.txt",
         report="report.html"
 
 
 def glob_files():
-      suffixes = ['*.gbff', '.gbf', '*.gbk', '*.gb', '*.genbank']
+      suffixes = ['*.gbff', '*gbf', '*.gbk.gbk', '*.gbk', '*.gb', '*.genbank']
       files_glob = []
       for suf in suffixes:
           files_glob.append([Path(fa).name for fa in glob.glob(suf)])
-      print(files_glob)
+      if 'no' in config['download_genbank']['options']:
+          shell("touch 'logs/gunzip_complete.txt'")
+      else:
+          pass
       return files_glob
+
+rule check_for_cleannames:
+      input:
+           files = glob.glob('*.txt')
+      output:
+           "logs/cleannamecheck.txt"
+      params:
+           required = config['download_genbank']['options']
+      run:
+           shell("touch 'cleannames.txt'")
+           if 'yes' in params.required:
+               shell("touch 'cleannames.txt'")
+           else:
+               if 'cleannames.txt' in input.files:
+                   pass
+               else:
+                   print("Please create a file called cleannames.txt with the genbank files you want to include in the analysis one filename per line")
+           shell("touch 'logs/cleannamecheck.txt'")
 
 rule convert_nucl_protein:
       input:
            files = glob_files(),
-	   gunz = "logs/gunzip_complete.txt"
+           gunz = "logs/gunzip_complete.txt",
+           clean = "logs/cleannamecheck.txt"
       output:
            "logs/conversion_complete.txt"
       params:
@@ -59,6 +81,7 @@ rule convert_nucl_protein:
            if 'yes' in params.required:
                outfile2 = open("cleannames.txt", 'w')
            for file in input.files:
+               print("this is file", file)
                if 'yes' in params.required:
                    outfile2.write(Path(file).name+"\n")
                if 'protein' in params.type:
@@ -85,10 +108,10 @@ rule create_mapover:
 rule extract_from_gbk:
     input:
         check=glob.glob("cleannames.txt"),
-	mapov="Allnamesmapoverdatabase.txt"
+        mapov="Allnamesmapoverdatabase.txt"
     output:
         DATESTRING['today']+"extracted.fasta",
-	"logs/extracted_complete.txt"
+        "logs/extracted_complete.txt"
     params:
         config['protein_dna']['options']
     run:
@@ -96,7 +119,7 @@ rule extract_from_gbk:
         for cleanname in inputs:
             shell("python extract_ribo_seqs_from_gbk.py {cleanname} {params}")
         shell("touch 'logs/extracted_complete.txt'")
-	     
+
 
 rule check_for_missing_seqs:
     input:
@@ -106,16 +129,17 @@ rule check_for_missing_seqs:
         DATESTRING['today']+"concatenated_ribosomal_proteins_db.fasta",
         "strains_missing_ribos.txt"
     params:
-        protein_dna = config['protein_dna']['options']
+        protein_dna = config['protein_dna']['options'],
+        ribo_name_field = config['ribo_name_field']['options']
     run:
-        shell(f"python ribo_concat_diamond.py {input.extracted}")
+        shell(f"python ribo_concat_diamond.py {input.extracted} {params.ribo_name_field}")
 
 
 rule concatenate_with_previous:
     input:
          cats = config["previous_files"],
-	 newput = DATESTRING['today']+"concatenated_ribosomal_proteins_db.fasta",
-	 nextput = DATESTRING['today']+"concatenated_ribosomal_proteins_db.fasta_2"
+         newput = DATESTRING['today']+"concatenated_ribosomal_proteins_db.fasta",
+         nextput = DATESTRING['today']+"concatenated_ribosomal_proteins_db.fasta_2"
     output:
          DATESTRING['today']+".updateriboprot.fasta"
     log:
@@ -153,11 +177,13 @@ rule create_tree:
           DATESTRING['today']+".updateriboprotdedupe.aln.treefile"
       params:
           tree_type = config['tree_type']['options']
+      threads:
+          config['threads']
       log:
           "logs/create_tree.log"
       run:
           if params.tree_type == 'iqtree':
-               shell("(iqtree -s {input} > {output}) 2>>log")
+               shell("(iqtree -s {input} -m LG -bb 1000 -alrt 1000 -nt {threads} > {output}) 2>>log")
           else:
                shell("(fasttree < {input} > {output}) 2>>log")
 

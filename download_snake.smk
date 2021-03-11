@@ -1,4 +1,6 @@
 rule download_ncbi:
+      input:
+           "logs/cleannamecheck.txt"
       params:
            required=config['download_genbank']['options']
       output:
@@ -8,7 +10,7 @@ rule download_ncbi:
       run:
            if 'yes' in params.required:
                for gen in [line.rstrip() for line in open('genus.txt', 'r')]:
-                   shell(f"ncbi-genome-download --genera {gen} bacteria --parallel {threads}")
+                   shell(f"ncbi-genome-download -g {gen} bacteria --parallel {threads}")
            shell("touch 'logs/completed.txt'")
 
 
@@ -22,9 +24,9 @@ rule gather_gbff:
       run:
            if 'yes' in params.required:
                files = glob.glob("**/*gbff.gz", recursive=True)
-	       outfile = open("logs/newroot.txt", 'w')
-	       path=os.getcwd()
-	       for file in files:
+               outfile = open("logs/newroot.txt", 'w')
+               path=os.getcwd()
+               for file in files:
                    print(Path(file).name)
                    shutil.copy(file, path)
                    outfile.write(Path(file).name+"\n")
@@ -41,6 +43,7 @@ rule gunzip_zipfiles:
             required=config['download_genbank']['options']
        run:
             if 'yes' in params.required:
-                shell("gunzip *gbff.gz")
+                shell("gunzip *gbff.gz"),
+                shell("touch 'logs/gunzip_complete.txt'")
             else:
                 shell("touch 'logs/gunzip_complete.txt'")
