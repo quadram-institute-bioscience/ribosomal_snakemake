@@ -4,7 +4,7 @@
 
 A workflow to generate ribosomal protein phylogenetic trees, using 15 ribosomal protein sequences.  Either protein or DNA sequences can be used to build the tree, it may be of benefit to use DNA sequences for more closely related genomes, and protein sequences for those that are more divergent.
 
-<img src="https://github.com/LCrossman/ribosomal_snakemake/blob/main/RC_snakemake2.jpg" width="350" height="450">
+<img src="https://github.com/LCrossman/ribosomal_snakemake/blob/main/RC_snakemake2.jpg" width="450" height="550">
 # Installation <i>via</i> conda:
 Use conda to install to a linux or Mac OSX environment:
 
