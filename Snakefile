@@ -176,16 +176,23 @@ rule create_tree:
       output:
           DATESTRING['today']+".updateriboprotdedupe.aln.treefile"
       params:
-          tree_type = config['tree_type']['options']
+          tree_type = config['tree_type']['options'],
+          protein_dna = config['protein_dna']['options']
       threads:
           config['threads']
       log:
           "logs/create_tree.log"
       run:
           if params.tree_type == 'iqtree':
-               shell("(iqtree -s {input} -m LG -bb 1000 -alrt 1000 -nt {threads} > {output}) 2>>log")
+              if params.protein_dna == 'protein':
+                   shell("(iqtree -s {input} -m LG -bb 1000 -alrt 1000 -nt {threads} > {output}) 2>>log")
+              else:
+                   shell("(iqtree -s {input} -m TIM2+I+G -bb 1000 -alrt 1000 -nt {threads} > {output}) 2>>log")
           else:
-               shell("(fasttree < {input} > {output}) 2>>log")
+              if params.protein_dna == 'protein':
+                   shell("(fasttree < {input} > {output}) 2>>log")
+              else:
+                   shell("(fasttree -nt -grt < {input} > {output}) 2>>log")
 
 rule report:
       input:
