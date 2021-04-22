@@ -100,7 +100,7 @@ rule create_mapover:
        run:
             if 'yes' in params.required:	  
                 shell("for file in GCF*gbff; do echo $file; grep DEFINITION $file; done > whichsequenceiswhich.txt")
-                shell("python ~/makeconsdatabasemapping.py > Allnamesmapoverdatabase.txt")
+                shell("python makeconsdatabasemapping.py > Allnamesmapoverdatabase.txt")
             else:
                 shell("touch 'Allnamesmapoverdatabase.txt'")
 
@@ -176,23 +176,16 @@ rule create_tree:
       output:
           DATESTRING['today']+".updateriboprotdedupe.aln.treefile"
       params:
-          tree_type = config['tree_type']['options'],
-          protein_dna = config['protein_dna']['options']
+          tree_type = config['tree_type']['options']
       threads:
           config['threads']
       log:
           "logs/create_tree.log"
       run:
           if params.tree_type == 'iqtree':
-              if params.protein_dna == 'protein':
-                   shell("(iqtree -s {input} -m LG -bb 1000 -alrt 1000 -nt {threads} > {output}) 2>>log")
-              else:
-                   shell("(iqtree -s {input} -m TIM2+I+G -bb 1000 -alrt 1000 -nt {threads} > {output}) 2>>log")
+               shell("(iqtree -s {input} -m LG -bb 1000 -alrt 1000 -nt {threads} > {output}) 2>>log")
           else:
-              if params.protein_dna == 'protein':
-                   shell("(fasttree < {input} > {output}) 2>>log")
-              else:
-                   shell("(fasttree -nt -grt < {input} > {output}) 2>>log")
+               shell("(fasttree < {input} > {output}) 2>>log")
 
 rule report:
       input:

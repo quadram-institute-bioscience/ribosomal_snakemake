@@ -1,7 +1,7 @@
 rule diamond_db:
     input:
          samp=f"{{sample}}",
-	 miss="strains_missing_ribos.txt"
+         miss="strains_missing_ribos.txt"
     output:
          f"{{sample}}.dmnd"
     shell:
@@ -35,7 +35,7 @@ rule diamond_run:
 rule collect_hits:
     input:
          infiles=glob.glob("*.out"),
-	 complete="logs/blast_complete.txt"
+         complete="logs/blast_complete.txt"
     output:
          DATESTRING['today']+"recovered.fasta"
     params:
@@ -53,7 +53,7 @@ rule collect_hits:
                      shell(f"python collect_from_diamond_blast_nucleotide.py {inp} {params.protein_dna}")
          else:
              shell("touch {output}")
-		   
+
 
 rule concatenate:
     input:
@@ -62,5 +62,7 @@ rule concatenate:
          outfile=DATESTRING['today']+"concatenated_ribosomal_proteins_db.fasta_2"
     log:
          log="logs/concatenate.log"
+    params:
+         ribo_name_field = config['ribo_name_field']['options']
     shell:
-         "python ribo_concat_diamond.py {input.infile}"
+         "python ribo_concat_diamond.py {input.infile} {params.ribo_name_field}"
