@@ -13,8 +13,6 @@ import re
 handle = open(sys.argv[1], 'r')
 reader = csv.reader(open(sys.argv[1]), delimiter='\t')
 infile_name = sys.argv[1].split('.')
-if 'GCF_' in infile_name[2]:
-   accession = '.'.join(infile_name[2:-1])
 if 'protein' in sys.argv[2]:
    inf = '.'.join(infile_name[2:-1])+".faa"
 elif 'dna' in sys.argv[2]:
@@ -52,8 +50,6 @@ for i, line in enumerate(sorted(reader, key=compose(float, itemgetter(2)), rever
     else:
         if i > 0:
             pass
-        if float(line[2]) < 80.0:
-           pass
         else:
             try:
                d[line[0]].append(line[1])
@@ -72,10 +68,7 @@ for rec in records:
         if rec.id in keeps:
             print("Hit identified", rec.id, keeps)
             shortid = rec.id.split('_')
-            if accession:
-               newid = "{}|{}".format(d[rec.id], accession)
-            else:
-               newid = "{}|{}".format(d[rec.id],shortid[0])
+            newid = "{}|{}".format(d[rec.id],shortid[0])
             print("this is newid", newid, "here")
             new_rec = SeqRecord(rec.seq, id=newid, description="")
             print("new_rec", new_rec)

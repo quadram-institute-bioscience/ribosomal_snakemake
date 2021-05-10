@@ -40,20 +40,12 @@ for rec in records:
                             sequences.append(newrec)
                         elif params.lower() == 'protein':
                             #protein parameters so extract the protein sequence, (by translating the DNA sequence) and save to file with appropriate ID
-                            prot_seq = feature.location.extract(rec.seq).translate()
-                            newrec = SeqRecord(prot_seq, id="{}_{}|{}".format(ribo_dic[elements[-1]], elements[-1], filehandle), description="")
-                            if '*' in prot_seq[:-1]:
-                                pass
-                            else:
-                                sequences.append(newrec)
+                            newrec = SeqRecord(feature.location.extract(rec.seq).translate(), id="{}_{}|{}".format(ribo_dic[elements[-1]], elements[-1], filehandle), description="")
+                            sequences.append(newrec)
                         else:
                             print("unknown parameters for DNA or protein, please choose either dna or protein")
 
+outfile = open(outname, 'a+')
+#save chosen sequences to file with date stamp
 
-    
-if len(sequences) == 15:
-    outfile = open(outname, 'a+')
-    #save chosen sequences to file with date stamp
-    SeqIO.write(sequences, outfile, "fasta")
-else:
-    pass
+SeqIO.write(sequences, outfile, "fasta")
