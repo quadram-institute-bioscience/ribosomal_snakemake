@@ -10,6 +10,7 @@ A workflow to generate ribosomal protein phylogenetic trees, using 15 ribosomal 
 snakemake>=3.5<br>
 python>=3.3<br>
 biopython>=1.77<br>
+toolz>=0.11.1
 diamond BLAST version>=0.9.32<br>
 mafft>=7.429<br>
 fasttree>=2.1.10 OR:<br>
