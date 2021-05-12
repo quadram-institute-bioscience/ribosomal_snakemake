@@ -12,7 +12,7 @@ infile_name = sys.argv[1].split('.')
 inf = '.'.join(infile_name[2:-1])+".ffn"
 print("infile name is", inf)
 infile = open(inf, 'r')
-
+ribo_names_field = int(sys.argv[3])
 keeps = []
 d = {}
 i = 0
@@ -62,7 +62,7 @@ for rec in records:
         if rec.id in keeps:
             print("Hit identified", rec.id, keeps)
             shortid = rec.id.split('_')
-            newid = "{}|{}".format(d[rec.id],shortid[0])
+            newid = "{}|{}".format(d[rec.id],shortid[int(ribo_names_field)])
             print("this is newid", newid, "here")
             new_rec = SeqRecord(rec.seq, id=newid, description="")
             print("new_rec", new_rec)

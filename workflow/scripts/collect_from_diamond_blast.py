@@ -17,6 +17,7 @@ if 'protein' in sys.argv[2]:
    inf = '.'.join(infile_name[2:-1])+".faa"
 elif 'dna' in sys.argv[2]:
    inf = '.'.join(infile_name[2:-1])+".ffn"
+ribo_names_field = sys.argv[3]
 print("infile name is", inf)
 infile = open(inf, 'r')
 
@@ -26,7 +27,7 @@ i = 0
 j = []
 
 outname = datetime.date.today().strftime("%d-%m-%y")+"recovered.fasta"
-print("outname", outname)
+print("outfile name", outname)
 
 def check_for_more_than_one(handle):
     for line in infile:
@@ -40,11 +41,9 @@ def check_for_more_than_one(handle):
 
 
 d = {}
-#reader = csv.reader(open(handle), delimiter='\t')
 
 for i, line in enumerate(sorted(reader, key=compose(float, itemgetter(2)), reverse=True)):
     print(line)
-   # elements = line.rstrip().split()
     if check_for_more_than_one == False:
         print("there's more than one with the same score!!!")
     else:
@@ -56,26 +55,24 @@ for i, line in enumerate(sorted(reader, key=compose(float, itemgetter(2)), rever
             except:
                d[line[0]] = line[1]
             keeps.append(line[0])
-
-
-print("this is keeps", keeps)
             
 sequences = []
 records = list(SeqIO.parse(infile, "fasta"))
 outfile = open(outname, 'a+')
+
+## uncomment for debugging
 for rec in records:
     try:
         if rec.id in keeps:
-            print("Hit identified", rec.id, keeps)
+     ##     print("Hit identified", rec.id, keeps)
             shortid = rec.id.split('_')
-            newid = "{}|{}".format(d[rec.id],shortid[0])
-            print("this is newid", newid, "here")
+            newid = "{}|{}".format(d[rec.id],shortid[int(ribo_names_field)])
+     ##     print("this is newid", newid, "here")
             new_rec = SeqRecord(rec.seq, id=newid, description="")
-            print("new_rec", new_rec)
+     ##     print("new_rec", new_rec)
             sequences.append(new_rec)
     except:
         pass
 
-print("len seqeunces", len(sequences))
+print("length of sequences", len(sequences))
 SeqIO.write(sequences, outfile, "fasta")
-

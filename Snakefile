@@ -55,7 +55,6 @@ rule check_for_cleannames:
       params:
            required = config['download_genbank']['options']
       run:
-           shell("touch 'cleannames.txt'")
            if 'yes' in params.required:
                shell("touch 'cleannames.txt'")
            else:

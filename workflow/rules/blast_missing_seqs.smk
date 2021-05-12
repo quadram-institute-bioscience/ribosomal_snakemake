@@ -39,18 +39,16 @@ rule collect_hits:
     output:
          DATESTRING['today']+"recovered.fasta"
     params:
-         protein_dna = config['protein_dna']['options']
+         protein_dna = config['protein_dna']['options'],
+         ribo_name_field = config['ribo_name_field']['options']
     log:
          log="logs/collect_hits.log"
     run:
-         print("len", len(input.infiles))
+         print("number of input files", len(input.infiles))
          if len(input.infiles) > 0:
              for inp in input.infiles:
-                 print("inp is", inp)
-                 if params.protein_dna == 'protein':
-                     shell(f"python collect_from_diamond_blast.py {inp} {params.protein_dna}")
-                 else:
-                     shell(f"python collect_from_diamond_blast_nucleotide.py {inp} {params.protein_dna}")
+                 print("input is", inp)
+                 shell(f"python collect_from_diamond_blast_nucleotide.py {inp} {params.protein_dna} {params.ribo_name_field}")
          else:
              shell("touch {output}")
 
