@@ -51,9 +51,9 @@ for i, line in enumerate(sorted(reader, key=compose(float, itemgetter(2)), rever
             pass
         else:
             try:
-               d[line[0]].append(line[1])
+                d[line[0]].append(line[1])
             except:
-               d[line[0]] = line[1]
+                d[line[0]] = line[1]
             keeps.append(line[0])
             
 sequences = []
@@ -67,7 +67,7 @@ for rec in records:
      ##     print("Hit identified", rec.id, keeps)
             shortid = rec.id.split('_')
             newid = "{}|{}".format(d[rec.id],shortid[int(ribo_names_field)])
-     ##     print("this is newid", newid, "here")
+    ##     print("this is newid", newid, "here")
             new_rec = SeqRecord(rec.seq, id=newid, description="")
      ##     print("new_rec", new_rec)
             sequences.append(new_rec)

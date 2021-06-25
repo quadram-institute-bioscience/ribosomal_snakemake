@@ -20,7 +20,7 @@ def concatenate_diamond_matches(infile, ribo_names_field):
 
     for rec in records:
         id = rec.id.split('|')
-#        print("id to split on |", id)
+        print("id to split on |", id)
         shortid = id[0].split('_')
 #        print("shortid to split on _", shortid)
         newid = id[1]

@@ -1,7 +1,7 @@
 rule diamond_db:
     input:
          samp=f"{{sample}}",
-	 miss="strains_missing_ribos.txt"
+         miss="strains_missing_ribos.txt"
     output:
          f"{{sample}}.dmnd"
     shell:
@@ -35,25 +35,23 @@ rule diamond_run:
 rule collect_hits:
     input:
          infiles=glob.glob("*.out"),
-	 complete="logs/blast_complete.txt"
+         complete="logs/blast_complete.txt"
     output:
          DATESTRING['today']+"recovered.fasta"
     params:
-         protein_dna = config['protein_dna']['options']
+         protein_dna = config['protein_dna']['options'],
+         ribo_name_field = config['ribo_name_field']['options']
     log:
          log="logs/collect_hits.log"
     run:
-         print("len", len(input.infiles))
+         print("number of input files", len(input.infiles))
          if len(input.infiles) > 0:
              for inp in input.infiles:
-                 print("inp is", inp)
-                 if params.protein_dna == 'protein':
-                     shell(f"python collect_from_diamond_blast.py {inp}")
-                 else:
-                     shell(f"python collect_from_diamond_blast_nucleotide.py {inp}")
+                 print("input is", inp)
+                 shell(f"python workflow/scripts/collect_from_diamond_blast_nucleotide.py {inp} {params.protein_dna} {params.ribo_name_field}")
          else:
              shell("touch {output}")
-		   
+
 
 rule concatenate:
     input:
@@ -62,5 +60,7 @@ rule concatenate:
          outfile=DATESTRING['today']+"concatenated_ribosomal_proteins_db.fasta_2"
     log:
          log="logs/concatenate.log"
+    params:
+         ribo_name_field = config['ribo_name_field']['options']
     shell:
-         "python ribo_concat_diamond.py {input.infile}"
+         "python workflow/scripts/ribo_concat_diamond.py {input.infile} {params.ribo_name_field}"
