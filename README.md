@@ -51,7 +51,7 @@ Configure the workflow according to your needs by editing the file config.yaml. 
 4.	 If you do not want to download any genomes from the sequence databases, create a file, “cleannames.txt” containing the name of each genome file you want to include in your tree, one per line, and place “no” in the config.yaml under download_genbank options.  To use a mixture of download and provided genomes place “yes” in the config.yaml and do not provide a cleannames.txt file.
 5.	To update any previous trees, collect any files generated as concatenated deduplicated fasta files that you want to update, and edit appropriately the config.yaml file with the filenames.  
 Add Genbank files, ribosomal protein sequence files and a list of the files:
-If you do not want to download any genomes, add the names of all provided genbank format files to cleannames.txt on a one-line per file basis.  The suffix of the genbank files should end in .gbff (following the genbank download nomenclature), .gbk, .gb or .genbank. Add the names of your ribosomal sequence files on a one-line per file basis to atccs.txt.  An easy way to generate these files is with: 
+If you do not want to download any genomes, add the names of all provided genbank format files to cleannames.txt on a one-line per file basis.  The suffix of the genbank files should end in .gbff (following the genbank download nomenclature), .gbk, .gb or .genbank. Add the names of your ribosomal sequence files on a one-line per file basis to atccs.txt.  An easy way to generate these files is with:
 ls *gbff > cleannames.txt
 <br>
 Example files are contained in example_files folder with files for a testrun in the testfiles folder

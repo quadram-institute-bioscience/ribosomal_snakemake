@@ -18,3 +18,7 @@ report:
       "report.html"
 previous_files:
       "concatenated_ribos.fasta"
+outdir:
+      "none"
+workflow_dir:
+      "none"
