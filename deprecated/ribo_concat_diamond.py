@@ -1,12 +1,11 @@
 #!/usr/bin/python
-import sys
-import collections
-import datetime
-import os
-from Bio import SeqIO
-from loguru import logger as lg
 
-def concatenate_diamond_matches(infile, ribo_names_field, outdir):
+def concatenate_diamond_matches(infile, ribo_names_field):
+    import collections
+    import datetime
+    import os
+    from Bio import SeqIO
+
     handle = open(infile, 'r')
     ribo_names_field = ribo_names_field
     print("ribo_names_field", ribo_names_field)
@@ -21,7 +20,7 @@ def concatenate_diamond_matches(infile, ribo_names_field, outdir):
 
     for rec in records:
         id = rec.id.split('|')
-#        print("id to split on |", id)
+        print("id to split on |", id)
         shortid = id[0].split('_')
 #        print("shortid to split on _", shortid)
         newid = id[1]
@@ -43,8 +42,8 @@ def concatenate_diamond_matches(infile, ribo_names_field, outdir):
                    d[newid][ribo] = [newseq]
 
     #create datestamp file
-    outname = f"{outdir}/results/{datetime.date.today().strftime('%d-%m-%y')}.concatenated_ribosomal_proteins_db.fasta"
-    outfile_strains = open(f"{outdir}/results/strains_missing_ribos.txt", 'a+')
+    outname = datetime.date.today().strftime("%d-%m-%y")+"concatenated_ribosomal_proteins_db.fasta"
+    outfile_strains = open("strains_missing_ribos.txt", 'a+')
     if os.path.exists(outname):
        #if files have been collected from the annotation and we are now collecting from diamond blast process
        outname = outname+"_2"
@@ -52,7 +51,7 @@ def concatenate_diamond_matches(infile, ribo_names_field, outdir):
        #mark strains for diamond blast process if they were missing some sequences
        pass
 
-    outfile = open(f"{outname}", 'a+')
+    outfile = open(outname, 'a+')
     for key, value in d.items():
          #test we have all 15 sequences, otherwise mark genome for diamond blast searches or ignore
          if len(value) == 15:
@@ -63,6 +62,5 @@ def concatenate_diamond_matches(infile, ribo_names_field, outdir):
               print(key, "Missing some ribosomal proteins, will search with Diamond Blast", len(value))
               outfile_strains.write("{}\n".format(key))
 
-
-if __name__ == "__main__":
-     concatenate_diamond_matches(sys.argv[1], sys.argv[2], sys.argv[3])
+import sys
+concatenate_diamond_matches(sys.argv[1], sys.argv[2])

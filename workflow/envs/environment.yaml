@@ -1,11 +1,23 @@
-name: rc3_snakemake
+name: rc2_snakemake
 channels:
-  - conda-forge
   - bioconda
+  - conda-forge
   - defaults
   - r
 dependencies:
-  - snakemake
-  - biopython
+  - blast
+  - diamond
+  - mafft
+  - fasttree
+  - iqtree
+  - ncbi-genome-download
   - toolz
-prefix: /anaconda/envs/rc3_snakemake
+  - biopython=1.77
+  - pandas
+  - numpy
+  - networkx
+  - snakemake
+  - pip:
+    - click
+    - loguru
+    - pyaml
