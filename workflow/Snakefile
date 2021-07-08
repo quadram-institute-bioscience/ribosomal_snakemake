@@ -127,15 +127,18 @@ rule check_for_missing_seqs:
 
 rule concatenate_with_previous:
     input:
-        cats = config["previous_files"],
         newput = f"{config['outdir']}/results/{DATESTRING['today']}.concatenated_ribosomal_proteins_db.fasta",
         nextput = f"{config['outdir']}/results/{DATESTRING['today']}.concatenated_ribosomal_proteins_db.fasta_2"
     output:
         f"{config['outdir']}/results/{DATESTRING['today']}.updateriboprot.fasta"
     log:
         log=f"{config['outdir']}/logs/concatenate_with_previous.log"
-    shell:
-        "(cat {input.cats} {input.newput} {input.nextput} > {output}) 2>> {log}"
+    run:
+        if (config["previous_files"]):
+            add_previous_files = config["previous_files"]
+        else:
+            add_previous_files = ""
+        shell(f"(cat {add_previous_files} {{input.newput}} {{input.nextput}} > {{output}}) 2>> {{log}}")
 
 
 rule deduplicate:
@@ -146,7 +149,7 @@ rule deduplicate:
      log:
          log=f"{config['outdir']}/logs/deduplicate.log"
      shell:
-         "python check_not_duplicatedIDs.py {input}"
+         f"python {config['workflow_dir']}/scripts/check_not_duplicatedIDs.py {{input}}"
 
 rule align:
      input:

@@ -18,7 +18,7 @@ rule diamond_run:
      log:
           f"{config['outdir']}/logs/diamond_run.log"
      run:
-          if os.stat('strains_missing_ribos.txt').st_size == 0:
+          if os.stat(f"{config['outdir']}/results/strains_missing_ribos.txt").st_size == 0:
                shell(f"touch '{config['outdir']}/logs/blast_complete.txt'")
                shell(f"touch '{config['outdir']}/logs/collect_hits.log'")
                shell(f"touch '{config['outdir']}/logs/concatenate.log'")

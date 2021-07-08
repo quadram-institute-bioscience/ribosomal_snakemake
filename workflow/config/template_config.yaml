@@ -6,19 +6,13 @@ tree_type:
       options: "fasttree"
 protein_dna:
       options: "protein"
-ribosomefile:
-      "data/atccs.txt"
-genus:
-      "data/genus.txt"
+ribosomefile: "data/atccs.txt"
+genus: "data/genus.txt"
 cleannames:
       "data/cleannames.txt"
 ribo_name_field:
       options: 0
-report:
-      "report.html"
-previous_files:
-      "concatenated_ribos.fasta"
-outdir:
-      "none"
-workflow_dir:
-      "none"
+report: "report.html"
+previous_files: False
+outdir: False
+workflow_dir: False

@@ -9,7 +9,7 @@ import subprocess
 
 def prepare_data_list(folder, ext = ['.gbk','.gb','.genbank','.gff']):
     """
-    scan the folder and make a list of file with expeted extensions
+    scan the folder and make a list of file with expected extensions
     """
     genbank_files = Path(folder).glob("*.*")
     results = []
@@ -42,13 +42,14 @@ def run_workflow(snakefile, config_file, threads, dry_run=False):
 @click.argument('ribosomal-protein-folder')
 @click.option('-c','--config-file', default="workflow/config/template_config.yaml", help="Config template file", show_default=True)
 @click.option('-s', '--snakefile', default="workflow/Snakefile", help="Snakefile", show_default=True)
+@click.option('--other-file', default=None, help="Absolute path to additional ribosomal protein file")
 @click.option('-t', '--threads', default=8, help="Number of threads", show_default=True)
 @click.option('-w','--workflow-dir', default='workflow', help="Workflow directory", show_default=True)
 @click.option('-o', '--outdir', default='output', help="Output directory", show_default=True)
 @click.option('--tree-builder',type=click.Choice(['iqtree','fasttree'], case_sensitive=False), default="iqtree", help="Tree builder: iqtree or fasttree", show_default=True)
 @click.option('--verbose',default=False, help="Print verbosity of the execution", show_default=True)
 @click.option('--dry-run', is_flag=True, default=False, help="Dry run")
-def main(data_folder, ribosomal_protein_folder, snakefile, config_file, workflow_dir, outdir, threads, tree_builder, dry_run, verbose):
+def main(data_folder, ribosomal_protein_folder, snakefile, config_file, workflow_dir, outdir, threads, other_file, tree_builder, dry_run, verbose):
     if verbose:
         lg.enable("__main__")
     
@@ -79,6 +80,12 @@ def main(data_folder, ribosomal_protein_folder, snakefile, config_file, workflow
     config["outdir"] = outdir
     config["workflow_dir"] = workflow_dir
     config["tree_type"]["options"] = tree_builder
+    if other_file is not None:
+        if Path(other_file).exists():
+            config["previous_files"] = other_file
+        else:
+            lg.enable("__main__")
+            lg.critical(f"The additional chromosome protein file {other_file} is not existed.")
 
     with open(this_run_config_file, "w") as fh:
         yaml.dump(config, fh)

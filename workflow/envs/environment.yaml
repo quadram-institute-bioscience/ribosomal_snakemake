@@ -17,3 +17,7 @@ dependencies:
   - numpy
   - networkx
   - snakemake
+  - pip:
+    - click
+    - loguru
+    - pyaml
