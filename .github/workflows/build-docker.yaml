@@ -15,7 +15,7 @@ on:
     paths:
       - 'Dockerfile'
       - '!README.md'
-      - '!app/data/*.*'
+      - '!Singularity'
 
 jobs:
   main:
@@ -37,7 +37,7 @@ jobs:
         name: Github checkout
         uses: actions/checkout@v2
         with:
-          ref: coronahit
+          ref: main
       -
         name: Build and push
         id: docker_build
