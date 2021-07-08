@@ -11,7 +11,7 @@ on:
 
 
   push:
-    branches: coronahit
+    branches: dev
     paths:
       - 'Dockerfile'
       - '!README.md'
