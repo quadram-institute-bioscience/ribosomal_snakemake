@@ -9,8 +9,8 @@ This repo has some modifications to make the workflow more portable. Download fu
 
 Suppose you are working on <i>Staphylococcus</i> genus
 
-1.	Gather your ribosomal protein sequences as protein sequence fasta files in 15 separate files into a directory, see `staph_ribosomal_proteins` as an example in this github.  These will be used for either protein or DNA sequence trees as per your choice laid out in the `workflow/config/template_config.yaml`.  They should be named within the file as `L14_rplN, L16_rplP, L18_rplR, L2_rplB, L22_rplV, L24_rplX, L3_rplC, L4_rplD, L5_rplE, L6_rplF, S10_rpsJ, S17_rpsQ, S19_rpsS, S3_rpsC, and S8_rpsH`, respectively and 1 should be placed in the ribo_names_field in the config.yaml.  If they are named with the rpl or rpS letter first (such as rplN_L14) 0 should be placed in the `workflow/config/template_config.yaml` file under ribo_name_field.
-2.	Gather all of your genome sequences as annotated genbank files in another directory, for example `data`.
+1.	Collect your ribosomal protein sequences as protein sequence fasta files in 15 separate files into a directory, see `staph_ribosomal_proteins` as an example in this github.
+2.	Collect all of your genome sequences as annotated genbank files (either downloaded from genbank NCBI or annotated with Prokka) in another directory, for example `data`.
 
 # Installation and Usage:
 
@@ -95,3 +95,39 @@ conda activate rc2_snakemake
 # Execute the pipeline on the examples as mentioned in the Docker section
 ./ribotree.py -t 4 -w workflow -o test-output ./data ./staph_ribosomal_proteins
 ```
+# Pipeline Output
+
+Once the pipeline finishes, you should expect the pipeline output as below
+
+```
+test-output/
+├── config.yaml
+├── logs
+│   ├── align.log
+│   ├── blast_complete.txt
+│   ├── collect_hits.log
+│   ├── concatenate.log
+│   ├── concatenate_with_previous.log
+│   ├── conversion_complete.txt
+│   ├── create_tree.log
+│   ├── deduplicate.log
+│   ├── diamond_run.log
+│   ├── extracted_complete.txt
+│   └── gunzip_complete.txt
+└── results
+    ├── 09-07-21.concatenated_ribosomal_proteins_db.fasta
+    ├── 09-07-21.concatenated_ribosomal_proteins_db.fasta_2
+    ├── 09-07-21.extracted.fasta
+    ├── 09-07-21.recovered.fasta
+    ├── 09-07-21.updateriboprot.fasta
+    ├── 09-07-21.updateriboprot.fastadedupe.fasta
+    ├── 09-07-21.updateriboprotdedupe.aln
+    ├── 09-07-21.updateriboprotdedupe.aln.treefile
+    ├── Allnamesmapoverdatabase.txt
+    ├── report.html
+    ├── ribosome_db
+    └── strains_missing_ribos.txt
+```
+
+# TODO
+- To make Galaxy wrapper
