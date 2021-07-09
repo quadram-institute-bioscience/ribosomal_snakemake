@@ -95,3 +95,36 @@ conda activate rc2_snakemake
 # Execute the pipeline on the examples as mentioned in the Docker section
 ./ribotree.py -t 4 -w workflow -o test-output ./data ./staph_ribosomal_proteins
 ```
+# Pipeline Output
+
+Once the pipeline finishes, you should expect the pipeline output as below
+
+```
+test-output/
+├── config.yaml
+├── logs
+│   ├── align.log
+│   ├── blast_complete.txt
+│   ├── collect_hits.log
+│   ├── concatenate.log
+│   ├── concatenate_with_previous.log
+│   ├── conversion_complete.txt
+│   ├── create_tree.log
+│   ├── deduplicate.log
+│   ├── diamond_run.log
+│   ├── extracted_complete.txt
+│   └── gunzip_complete.txt
+└── results
+    ├── 09-07-21.concatenated_ribosomal_proteins_db.fasta
+    ├── 09-07-21.concatenated_ribosomal_proteins_db.fasta_2
+    ├── 09-07-21.extracted.fasta
+    ├── 09-07-21.recovered.fasta
+    ├── 09-07-21.updateriboprot.fasta
+    ├── 09-07-21.updateriboprot.fastadedupe.fasta
+    ├── 09-07-21.updateriboprotdedupe.aln
+    ├── 09-07-21.updateriboprotdedupe.aln.treefile
+    ├── Allnamesmapoverdatabase.txt
+    ├── report.html
+    ├── ribosome_db
+    └── strains_missing_ribos.txt
+```

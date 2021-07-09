@@ -10,7 +10,7 @@ on:
         default: 'YES'
 
   push:
-    branches: main
+    branches: dev
     paths:
       # - 'Dockerfile'
       - '!README.md'
