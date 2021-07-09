@@ -25,7 +25,6 @@ docker run --rm quadram/ribotree ribotree.py --help
 
 If successfully downloaded, you should see the following message:
 ```
-
 Usage: ribotree.py [OPTIONS] DATA_FOLDER RIBOSOMAL_PROTEIN_FOLDER
 
 Options:
@@ -40,7 +39,9 @@ Options:
   --tree-builder [iqtree|fasttree]
                                   Tree builder: iqtree or fasttree  [default:
                                   iqtree]
-  --verbose BOOLEAN               Print verbosity of the execution  [default:
+  --protein / --dna               Input type, i.e aminod acid or nucleotide
+                                  [default: protein]
+  -v, --verbose BOOLEAN           Print verbosity of the execution  [default:
                                   False]
   --dry-run                       Dry run
   --help                          Show this message and exit.

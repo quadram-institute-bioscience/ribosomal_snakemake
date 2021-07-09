@@ -47,9 +47,10 @@ def run_workflow(snakefile, config_file, threads, dry_run=False):
 @click.option('-w','--workflow-dir', default='workflow', help="Workflow directory", show_default=True)
 @click.option('-o', '--outdir', default='output', help="Output directory", show_default=True)
 @click.option('--tree-builder',type=click.Choice(['iqtree','fasttree'], case_sensitive=False), default="iqtree", help="Tree builder: iqtree or fasttree", show_default=True)
-@click.option('--verbose',default=False, help="Print verbosity of the execution", show_default=True)
+@click.option('--protein/--dna', default=True, help="Input type, i.e aminod acid or nucleotide", show_default=True)
+@click.option('-v','--verbose',default=False, help="Print verbosity of the execution", show_default=True)
 @click.option('--dry-run', is_flag=True, default=False, help="Dry run")
-def main(data_folder, ribosomal_protein_folder, snakefile, config_file, workflow_dir, outdir, threads, other_file, tree_builder, dry_run, verbose):
+def main(data_folder, ribosomal_protein_folder, snakefile, config_file, workflow_dir, outdir, protein, threads, other_file, tree_builder, dry_run, verbose):
     if verbose:
         lg.enable("__main__")
     
@@ -80,6 +81,9 @@ def main(data_folder, ribosomal_protein_folder, snakefile, config_file, workflow
     config["outdir"] = outdir
     config["workflow_dir"] = workflow_dir
     config["tree_type"]["options"] = tree_builder
+    if not protein:
+        config["protein_dna"]["options"] = "dna"
+        config["ribo_name_field"]["options"] = 1
     if other_file is not None:
         if Path(other_file).exists():
             config["previous_files"] = other_file

@@ -170,14 +170,17 @@ rule create_tree:
           f"{config['outdir']}/results/{DATESTRING['today']}.updateriboprotdedupe.aln.treefile"
       params:
           tree_type = config['tree_type']['options'],
+          input_type = config['ribo_name_field']['options'],
           threads = config['threads']
       log:
           f"{config['outdir']}/logs/create_tree.log"
       run:
-          if params.tree_type == 'iqtree':
-               shell("(iqtree -bb 1000 -alrt 1000 -nm 500 -m LG -nt {threads} -s {input} > {log})")
+          if params.tree_type == 'iqtree' and params.input_type == 'protein':
+              shell("(iqtree -bb 1000 -alrt 1000 -nm 500 -m LG -nt {threads} -s {input} > {log})")
+          elif params.tree_type == 'iqtree' and params.input_type == 'dna':
+              shell("(iqtree -bb 1000 -alrt 1000 -nm 500 -m GTR -nt {threads} -s {input} > {log})")
           else:
-               shell("(fasttree < {input} > {output}) 2>> {log}")
+              shell("(fasttree < {input} > {output}) 2>> {log}")
 
 rule report:
       input:
