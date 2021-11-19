@@ -41,6 +41,8 @@ RUN chmod 0775 /usr/local/bin/entrypoint.sh
 
 WORKDIR /data
 
+ENV SNAKEMAKE_OUTPUT_CACHE=/data
+
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
 
 CMD ["/bin/bash"]
