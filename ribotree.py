@@ -57,10 +57,11 @@ def main(data_folder, ribosomal_protein_folder, snakefile, config_file, workflow
         lg.enable("__main__")
     
     if workflow_dir is None:
-        workflow_dir = os.path.dirname(os.path.abspath(__file__))
-        config_file = os.path.join(workflow_dir, config_file)
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        workflow_dir = os.path.join(script_dir,"workflow")
+        config_file = os.path.join(script_dir, config_file)
         lg.info(f"Config file: {config_file}")
-        snakefile = os.path.join(workflow_dir, snakefile)
+        snakefile = os.path.join(script_dir, snakefile)
         lg.info(f"Snake file: {snakefile}")
 
     logs_dir = Path(outdir).joinpath("logs")
