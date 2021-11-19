@@ -57,10 +57,10 @@ def main(data_folder, ribosomal_protein_folder, snakefile, config_file, workflow
         lg.enable("__main__")
     
     if workflow_dir is None:
-        script_dir = os.path.dirname(os.path.abspath(__file__))
-        config_file = os.path.join(script_dir, config_file)
+        workflow_dir = os.path.dirname(os.path.abspath(__file__))
+        config_file = os.path.join(workflow_dir, config_file)
         lg.info(f"Config file: {config_file}")
-        snakefile = os.path.join(script_dir, snakefile)
+        snakefile = os.path.join(workflow_dir, snakefile)
         lg.info(f"Snake file: {snakefile}")
 
     logs_dir = Path(outdir).joinpath("logs")
@@ -70,6 +70,7 @@ def main(data_folder, ribosomal_protein_folder, snakefile, config_file, workflow
 
     input_file = f"{data_folder}/cleannames.txt"
     ribosome_file = f"{data_folder}/atccs.txt"
+    genus_file = f"{data_folder}/genus.txt"
     this_run_config_file = f"{outdir}/config.yaml"
 
     data_files = prepare_data_list(data_folder)
@@ -87,6 +88,7 @@ def main(data_folder, ribosomal_protein_folder, snakefile, config_file, workflow
     config = load_config_file(config_file)
     config["cleannames"] = input_file
     config["ribosomefile"] = ribosome_file
+    config["genus"] = genus_file
     config["outdir"] = outdir
     config["workflow_dir"] = workflow_dir
     config["tree_type"]["options"] = tree_builder

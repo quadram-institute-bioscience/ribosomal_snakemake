@@ -16,10 +16,12 @@ include: "rules/blast_missing_seqs.smk"
 lg.info(f"Ribosome list file: {config['ribosomefile']}")
 lg.info(f"Genus: {config['genus']}")
 
-handle = open(config['ribosomefile'], 'r')
-genus = open(config['genus'], 'r')
 
-GENUS = [liner.rstrip() for liner in genus]
+if Path(config['genus']).exists():
+    genus = open(config['genus'], 'r')
+    GENUS = [liner.rstrip() for liner in genus]
+
+handle = open(config['ribosomefile'], 'r')
 SAMPLES = [lin.rstrip() for lin in handle]
 
 # print(DATESTRING, SAMPLES, GENUS)
