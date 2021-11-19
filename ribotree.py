@@ -67,7 +67,6 @@ def main(data_folder, ribosomal_protein_folder, snakefile, config_file, workflow
     lg.info(logs_dir)
     if not logs_dir.exists():
         logs_dir.mkdir(parents=True, exist_ok=True)
-    if workflow_dir is None:
 
     input_file = f"{data_folder}/cleannames.txt"
     ribosome_file = f"{data_folder}/atccs.txt"
