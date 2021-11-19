@@ -6,6 +6,8 @@ from snakemake.io import load_configfile
 import yaml
 from yaml.loader import Loader
 import subprocess
+import os
+
 
 def prepare_data_list(folder, ext = ['.gbk','.gb','.genbank','.gff']):
     """
@@ -44,7 +46,7 @@ def run_workflow(snakefile, config_file, threads, dry_run=False):
 @click.option('-s', '--snakefile', default="workflow/Snakefile", help="Snakefile", show_default=True)
 @click.option('--other-file', default=None, help="Absolute path to additional ribosomal protein file")
 @click.option('-t', '--threads', default=8, help="Number of threads", show_default=True)
-@click.option('-w','--workflow-dir', default='workflow', help="Workflow directory", show_default=True)
+@click.option('-w','--workflow-dir', default=None, help="Workflow directory, default is the folder workflow at the same level as this script", show_default=True)
 @click.option('-o', '--outdir', default='output', help="Output directory", show_default=True)
 @click.option('--tree-builder',type=click.Choice(['iqtree','fasttree'], case_sensitive=False), default="iqtree", help="Tree builder: iqtree or fasttree", show_default=True)
 @click.option('--protein/--dna', default=True, help="Input type, i.e aminod acid or nucleotide", show_default=True)
@@ -54,11 +56,19 @@ def main(data_folder, ribosomal_protein_folder, snakefile, config_file, workflow
     if verbose:
         lg.enable("__main__")
     
+    if workflow_dir is None:
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        config_file = os.path.join(script_dir, config_file)
+        lg.info(f"Config file: {config_file}")
+        snakefile = os.path.join(script_dir, snakefile)
+        lg.info(f"Snake file: {snakefile}")
+
     logs_dir = Path(outdir).joinpath("logs")
     lg.info(logs_dir)
     if not logs_dir.exists():
         logs_dir.mkdir(parents=True, exist_ok=True)
-    
+    if workflow_dir is None:
+
     input_file = f"{data_folder}/cleannames.txt"
     ribosome_file = f"{data_folder}/atccs.txt"
     this_run_config_file = f"{outdir}/config.yaml"
