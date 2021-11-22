@@ -17,10 +17,12 @@ if sys.argv[1].endswith('.gz'):
     print(filehandle)
 else:
     filehandle = sys.argv[1]
+
 handle = open(filehandle, 'r')
+
 params = sys.argv[2]
 outdir = sys.argv[3]
-lg.info("parameters for protein or dna are:", params)
+# lg.info(f"parameters for protein or dna are: {params}")
 outname = f"{datetime.date.today().strftime('%d-%m-%y')}.extracted.fasta"
 records = list(SeqIO.parse(handle, "genbank"))
 
@@ -49,6 +51,8 @@ for rec in records:
                             sequences.append(newrec)
                         else:
                             lg.info(f"unknown parameters for DNA or protein, please choose either dna or protein")
+
+lg.info(f"{filehandle} has {len(sequences)} squences extracted!")
 
 outfile = open(f"{outdir}/results/{outname}", 'a+')
 #save chosen sequences to file with date stamp

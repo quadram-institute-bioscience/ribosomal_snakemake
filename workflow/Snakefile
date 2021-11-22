@@ -44,18 +44,19 @@ rule all:
 
 
 def glob_files():
-      suffixes = ['*.gbff', '*.gbf', '*.gbk', '*.gb', '*.genbank']
-      files_glob = []
-      required=config['download_genbank']['options']
-      for suf in suffixes:
-          files_glob.append([Path(fa).name for fa in glob.glob(suf)])
-    #   lg.info(files_glob)
-      if 'no' in required:
-          shell(f"touch '{config['outdir']}/logs/gunzip_complete.txt'")
-      else:
-          pass
-    #   lg.info("files glob", files_glob)
-      return files_glob
+    #   suffixes = ['*.gbff', '*.gbf', '*.gbk', '*.gb', '*.genbank']
+    files_glob = [lin.rstrip() for lin in open(config['cleannames'],'r')]
+    # files_glob = []
+    required=config['download_genbank']['options']
+    # for suf in suffixes:
+    #     files_glob.append([Path(fa).name for fa in glob.glob(suf)])
+#   lg.info(files_glob)
+    if 'no' in required:
+        shell(f"touch '{config['outdir']}/logs/gunzip_complete.txt'")
+    else:
+        pass
+#   lg.info("files glob", files_glob)
+    return files_glob
 
 rule convert_nucl_protein:
     input:
@@ -69,17 +70,16 @@ rule convert_nucl_protein:
     threads:
         config['threads']
     run:
+        shell(f"mkdir -p {config['converted_nuc']}")
         if 'yes' in params.required:
             outfile2 = open("cleannames.txt", 'w')
-        for file in input.files:
+        for input_file in input.files:
             if 'yes' in params.required:
                 outfile2.write(f"{Path(file).name}\n")
             if 'protein' in params.type:
-                print("indeed I'm here in protein")
-                shell(f"python {config['workflow_dir']}/scripts/gbk2faa.py {{file}}")
-                print("gbk2faa executed")
+                shell(f"python {config['workflow_dir']}/scripts/gbk2faa.py {input_file} {config['converted_nuc']}")
             elif 'dna' in params.type:
-                shell(f"python {config['workflow_dir']}/scripts/gbk2ffn.py {{file}}")
+                shell(f"python {config['workflow_dir']}/scripts/gbk2ffn.py {input_file} {config['converted_nuc']}")
         shell(f"touch '{config['outdir']}/logs/conversion_complete.txt'")
 
 rule create_mapover:
@@ -105,11 +105,12 @@ rule extract_from_gbk:
         f"{config['outdir']}/results/{DATESTRING['today']}.extracted.fasta",
         f"{config['outdir']}/logs/extracted_complete.txt"
     params:
-        config['protein_dna']['options']
+        seq_type = config['protein_dna']['options']
     run:
         inputs = [lin.rstrip() for lin in open(''.join(input.check),'r')]
         for cleanname in inputs:
-            shell(f"python {config['workflow_dir']}/scripts/extract_ribo_seqs_from_gbk.py {{cleanname}} {{params}} {config['outdir']}")
+            lg.info(f"Extracting {cleanname}")
+            shell(f"python {config['workflow_dir']}/scripts/extract_ribo_seqs_from_gbk.py {cleanname} {{params.seq_type}} {config['outdir']}")
         shell(f"touch '{config['outdir']}/logs/extracted_complete.txt'")
 
 

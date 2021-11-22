@@ -9,7 +9,7 @@ import subprocess
 import os
 
 
-def prepare_data_list(folder, ext = ['.gbk','.gb','.genbank','.gff']):
+def prepare_data_list(folder, ext = ['.gbk','.gb','.genbank']):
     """
     scan the folder and make a list of file with expected extensions
     """
@@ -28,7 +28,7 @@ def load_config_file(config_file):
 
 
 def run_workflow(snakefile, config_file, threads, dry_run=False):
-    cmd = f"snakemake --snakefile {snakefile} --configfile {config_file} --cores {threads}"
+    cmd = f"snakemake --snakefile {snakefile} --configfile {config_file} --cores {threads}  --rerun-incomplete"
     if dry_run:
         cmd += " --dry-run"
     lg.info(f"Started running the workflow: {cmd}")
@@ -50,8 +50,8 @@ def run_workflow(snakefile, config_file, threads, dry_run=False):
 @click.option('-o', '--outdir', default='output', help="Output directory", show_default=True)
 @click.option('--tree-builder',type=click.Choice(['iqtree','fasttree'], case_sensitive=False), default="iqtree", help="Tree builder: iqtree or fasttree", show_default=True)
 @click.option('--protein/--dna', default=True, help="Input type, i.e aminod acid or nucleotide", show_default=True)
-@click.option('-v','--verbose',default=False, help="Print verbosity of the execution", show_default=True)
-@click.option('--dry-run', is_flag=True, default=False, help="Dry run")
+@click.option('-v','--verbose', is_flag=True, default=False, help="Print verbosity of the execution", show_default=True)
+@click.option('--dry-run', is_flag=True, default=False, help="Dry run", show_default=True)
 def main(data_folder, ribosomal_protein_folder, snakefile, config_file, workflow_dir, outdir, protein, threads, other_file, tree_builder, dry_run, verbose):
     if verbose:
         lg.enable("__main__")
@@ -91,6 +91,7 @@ def main(data_folder, ribosomal_protein_folder, snakefile, config_file, workflow
     config["ribosomefile"] = ribosome_file
     config["genus"] = genus_file
     config["outdir"] = outdir
+    config["converted_nuc"] = f"{outdir}/nuc"
     config["workflow_dir"] = workflow_dir
     config["tree_type"]["options"] = tree_builder
     if not protein:

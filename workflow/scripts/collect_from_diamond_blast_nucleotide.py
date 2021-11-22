@@ -6,21 +6,27 @@ from Bio.SeqRecord import SeqRecord
 import datetime
 import sys
 import re
+import os
 
-handle = open(sys.argv[1], 'r')
-infile_name = sys.argv[1].split('.')
-inf = '.'.join(infile_name[2:-1])+".ffn"
+ext = "ffn"
+if sys.argv[2] == "protein":
+    ext = "faa"
+handle = open(f"{sys.argv[1]}.{ext}", 'r')
+infile_name = os.path.basename(sys.argv[1]).split('.')
+inf = f"{infile_name[0]}.{ext}"
 print("infile name is", inf)
-infile = open(inf, 'r')
+infile = open(f"{sys.argv[1]}.{ext}", 'r')
 ribo_names_field = int(sys.argv[3])
+
 keeps = []
 d = {}
 i = 0
 j = []
 
 
-outname = datetime.date.today().strftime("%d-%m-%y")+"recovered.fasta"
-print("outname", outname)
+# outname = f"{datetime.date.today().strftime('%d-%m-%y')}.recovered.fasta"
+outname = sys.argv[4]
+# print("outname", outname)
 
 def check_for_more_than_one(handle):
     for line in infile:
@@ -38,7 +44,7 @@ dicty = {}
 
 for ind, line in enumerate(handle):
     elements = line.rstrip().split()
-    print("elements", elements)
+    # print("elements", elements)
     if check_for_more_than_one == False:
         print("there's more than one with the same score!!!")
     else:
