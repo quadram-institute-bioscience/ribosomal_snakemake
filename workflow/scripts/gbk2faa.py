@@ -2,13 +2,15 @@
 
 from Bio import SeqIO
 import sys
+import os
 
-infile = sys.argv[1]
+outdir = sys.argv[2]
 
-gbk_filename = infile
-faa_filename = "{}.faa".format(gbk_filename)
-input_handle  = open(gbk_filename, "rt")
-output_handle = open(faa_filename, "w")
+handle_name = os.path.basename(sys.argv[1]).split('.')[0]
+outfile = os.path.join(outdir,f"{handle_name}.faa")
+
+input_handle = open(sys.argv[1], 'rt')
+output_handle = open(outfile, "w")
 
 for seq_record in SeqIO.parse(input_handle, "genbank") :
     print("Dealing with GenBank record {}".format(seq_record.id))
