@@ -48,7 +48,7 @@ Options:
 ```
 
 ```bash
-docker run --rm -it -u $(id -u ${USER}):$(id -g ${USER}) -v $PWD:/data quadram/ribotree ribotree.py -t 4 -w /opt/workflow -o test-output ./data ./staph_ribosomal_proteins
+docker run --rm -it -u $(id -u ${USER}):$(id -g ${USER}) -v $PWD:/data quadram/ribotree ribotree.py -t 4  -o test-output ./data ./staph_ribosomal_proteins
 ```
 ## Singularity
 
@@ -69,13 +69,13 @@ singularity ribotree.sif ribotree.py --help
 Execute the pipeline on the 2 folder as an example as mentioned in the Docker section
 
 ```
-singularity exec ribotree.sif ribotree.py -t 4 -w /opt/workflow -o test-output ./data ./staph_ribosomal_proteins
+singularity exec ribotree.sif ribotree.py -t 4 -o test-output ./data ./staph_ribosomal_proteins
 ```
 or
 
 ```
 singularity shell ribotree.sif
-ribotree.py -t 4 -w /opt/workflow -o test-output ./data ./staph_ribosomal_proteins 
+ribotree.py -t 4 -o test-output ./data ./staph_ribosomal_proteins 
 ```
 ## Conda 
 
