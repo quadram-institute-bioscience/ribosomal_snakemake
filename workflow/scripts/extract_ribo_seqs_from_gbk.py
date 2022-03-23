@@ -33,7 +33,7 @@ sequences = []
 filename = Path(filehandle).stem
 for rec in records:
     for feature in rec.features:
-        if feature.type == "CDS":
+        if feature.type == "CDS" and 'product' in feature.qualifiers.keys():
             if 'ribosomal protein' in ''.join(feature.qualifiers['product']):
                 elements = ''.join(feature.qualifiers['product']).split()
                 for rib in ribosomal_proteins:
